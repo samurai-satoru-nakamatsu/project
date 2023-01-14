@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block style %}
+<style>
+  pre {
+    background-color: black;
+    color: white;
+    padding: 50px;
+    border-radius: 10px;
+    height: 500px;
+    overflow-y: scroll;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link {% block index %}{% endblock %}" href="{% url 'youtube_data_api' %}">
+        Index
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block search %}{% endblock %}" href="{% url 'youtube_data_api_search' %}">
+        Search
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block videos %}{% endblock %}" href="{% url 'youtube_data_api_videos' %}">
+        Videos
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block thumbnails %}{% endblock %}" href="{% url 'youtube_data_api_thumbnails' %}">
+        Thumbnails
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block captions %}{% endblock %}" href="{% url 'youtube_data_api_captions' %}">
+        Captions
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block playlists %}{% endblock %}" href="{% url 'youtube_data_api_playlists' %}">
+        Playlists
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block channels %}{% endblock %}" href="{% url 'youtube_data_api_channels' %}">
+        Channels
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block video_categories %}{% endblock %}" href="{% url 'youtube_data_api_video_categories' %}">
+        Video Categories
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link {% block analytics_api %}{% endblock %}" href="{% url 'youtube_analytics_api' %}">
+        Analytics API
+      </a>
+    </li>
+  </ul>
+</div>
+{% endblock %}

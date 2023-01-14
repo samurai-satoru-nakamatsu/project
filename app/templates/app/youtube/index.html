@@ -1,0 +1,21 @@
+{% extends 'app/youtube/base.html' %}
+
+{% block index %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+    <a href="https://developers.google.com/youtube/v3/docs?hl=ja" target="_blank" rel="noopener">
+        https://developers.google.com/youtube/v3/docs?hl=ja
+    </a>
+    <h2 class="mt-2">credentials</h2>
+    <ul>
+    <li>token: {{ credentials.token }}</li>
+    <li>id_token: {{ credentials.id_token }}</li>
+    <li>token_uri: {{ credentials.token_uri }}</li>
+    <li>client_id: {{ credentials.client_id }}</li>
+    <li>quota_project_id: {{ credentials.quota_project_id }}</li>
+    <li>expiry: {{ credentials.expiry }}</li>
+    </ul>
+</div>
+{% endblock %}

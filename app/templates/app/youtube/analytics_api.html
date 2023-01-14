@@ -1,0 +1,11 @@
+{% extends 'app/youtube/base.html' %}
+{% load utils %}
+
+{% block analytics_api %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+    <pre>{{ analytics|pretty_json }}</pre>
+</div>
+{% endblock %}

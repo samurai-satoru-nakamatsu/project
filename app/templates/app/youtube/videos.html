@@ -1,0 +1,62 @@
+{% extends 'app/youtube/base.html' %}
+{% load utils %}
+
+{% block videos %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+  <h2>Videos</h2>
+  <a href="https://developers.google.com/youtube/v3/docs/videos?hl=ja" target="_blank" rel="noopener">
+    https://developers.google.com/youtube/v3/docs/videos?hl=ja
+  </a>
+  <form class="my-2" method="post" enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+      <div class="col-4 mb-3">
+        <label for="formFile" class="form-label">Video</label>
+        <input class="form-control" type="file" id="formFile" name="file" required>
+      </div>
+    </div>
+    <h3>snippet</h3>
+    <div class="row">
+      <div class="col-12 mb-3">
+        <label for="title" class="form-label">title</label>
+        <input type="text" class="form-control" id="title" name="title" required>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mb-3">
+        <label for="description" class="form-label">description</label>
+        <textarea class="form-control" id="description" name="description"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-4 mb-3">
+        <label for="keywords" class="form-label">keywords</label>
+        <input type="text" class="form-control" id="keywordss" name="keywords">
+      </div>  
+      <div class="col-4 mb-3">
+        <label for="category" class="form-label">category</label>
+        <select name="category" class="form-select">
+          {% for item in video_categories.items %}
+            <option value="{{ item.id }}">{{ item.snippet.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <h3>status</h3>
+    <div class="row">
+      <div class="col-4 mb-3">
+        <label for="privacyStatus" class="form-label">privacyStatus</label>
+        <select name="privacyStatus" class="form-select">
+          <option value="private">private</option>
+          <option value="public">public</option>
+          <option value="unlisted">unlisted</option>
+        </select>
+      </div>  
+    </div>
+    
+    <button class="btn btn-primary">送信</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'app/youtube/base.html' %}
+{% load utils %}
+
+{% block video_categories %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+  <h2>Video Categories</h2>
+  <a href="https://developers.google.com/youtube/v3/docs/videoCategories?hl=ja" target="_blank" rel="noopener">
+    https://developers.google.com/youtube/v3/docs/videoCategories?hl=ja
+  </a>
+  <pre>{{ video_categories|pretty_json }}</pre>
+</div>
+{% endblock %}

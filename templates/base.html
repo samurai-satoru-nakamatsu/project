@@ -1,0 +1,28 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
+    {% block style %}{% endblock %}
+  </head>
+  <body>
+  <nav class="navbar navbar-dark bg-dark sticky-top">
+    <div class="navbar-nav d-flex flex-row">
+      <a class="nav-link mx-3" href="{% url 'videos' %}">Videos</a>
+      <a class="nav-link mx-3" href="{% url 'youtube_data_api' %}"><i class="bi bi-youtube"></i> YouTube Data API</a>
+      <a class="nav-link mx-3" href="{% url 'recommend' %}">レコメンド</a>
+      <a class="nav-link mx-3" href="">メニュー４</a>
+    </div>
+    <div class="navbar-nav d-flex flex-row">
+    </div>
+  </nav>
+    <h1>{% block h1 %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+  </body>
+</html>

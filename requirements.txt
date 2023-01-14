@@ -1,0 +1,11 @@
+google-api-python-client
+google-auth-oauthlib
+google-auth-httplib2
+django
+dj-database-url
+gunicorn
+psycopg2-binary
+whitenoise
+pandas
+numpy
+scikit-surprise

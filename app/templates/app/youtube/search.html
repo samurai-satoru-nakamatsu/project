@@ -1,0 +1,35 @@
+{% extends 'app/youtube/base.html' %}
+{% load utils %}
+
+{% block search %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+  <h2>Search</h2>
+  <a href="https://developers.google.com/youtube/v3/docs/search?hl=ja" target="_blank" rel="noopener">
+    https://developers.google.com/youtube/v3/docs/search?hl=ja
+  </a>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th></th>
+        <th>タイトル</th>
+        <th>公開日</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in search.items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><img src="{{ item.snippet.thumbnails.default.url }}"></td>
+        <td>{{ item.snippet.title }}</td>
+        <td>{{ item.snippet.publishedAt }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <pre>{{ search|pretty_json }}</pre>
+</div>
+{% endblock %}

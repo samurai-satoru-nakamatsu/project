@@ -1,0 +1,33 @@
+{% extends 'app/youtube/base.html' %}
+{% load utils %}
+
+{% block playlists %}active{% endblock %}
+
+{% block content %}
+{{ block.super }}
+<div class="container mt-2">
+  <h2>Playlists</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th></th>
+        <th>タイトル</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in playlists.items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><img src="{{ item.snippet.thumbnails.default.url }}"></td>
+        <td>{{ item.snippet.title }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="https://developers.google.com/youtube/v3/docs/playlists?hl=ja" target="_blank" rel="noopener">
+    https://developers.google.com/youtube/v3/docs/playlists?hl=ja
+  </a>
+  <pre>{{ playlists|pretty_json }}</pre>
+</div>
+{% endblock %}
