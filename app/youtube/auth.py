@@ -44,6 +44,7 @@ def get_google_auth_credentials(state, authorization_response):
     flow.redirect_uri = REDIRECT_URI
 
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+    os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
 
     flow.fetch_token(authorization_response=authorization_response)
     credentials = flow.credentials

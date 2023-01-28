@@ -2,7 +2,7 @@ from django.urls import path
 from django.views.generic import TemplateView
 from .views import (
     showvideo, youtube_data_api, youtube_data_api_auth, youtube_data_api_oauth2_callback,
-    youtube_analytics_api, recommend_view
+    youtube_analytics_api, recommend_view, openlayers_view
 )
 
 urlpatterns = [
@@ -19,5 +19,6 @@ urlpatterns = [
     path('youtube-analytics-api/', youtube_analytics_api, name='youtube_analytics_api'),
     path('youtube-data-api/auth/', youtube_data_api_auth, name='youtube_data_api_auth'),
     path('youtube-data-api/oauth2callback/', youtube_data_api_oauth2_callback, name='youtube_data_api_oauth2_callback'),
-    path('recommend', recommend_view, name='recommend'),
+    path('recommend/', recommend_view, name='recommend'),
+    path('openlayers/', openlayers_view, name='openlayers'),
 ]

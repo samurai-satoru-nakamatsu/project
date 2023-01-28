@@ -17,7 +17,7 @@
       <a class="nav-link mx-3" href="{% url 'videos' %}">Videos</a>
       <a class="nav-link mx-3" href="{% url 'youtube_data_api' %}"><i class="bi bi-youtube"></i> YouTube Data API</a>
       <a class="nav-link mx-3" href="{% url 'recommend' %}">レコメンド</a>
-      <a class="nav-link mx-3" href="">メニュー４</a>
+      <a class="nav-link mx-3" href="{% url 'openlayers' %}">OpenLayers</a>
     </div>
     <div class="navbar-nav d-flex flex-row">
     </div>
@@ -25,4 +25,5 @@
     <h1>{% block h1 %}{% endblock %}</h1>
     {% block content %}{% endblock %}
   </body>
+  {% block script %}{% endblock %}
 </html>

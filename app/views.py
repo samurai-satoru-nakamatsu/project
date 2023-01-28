@@ -38,6 +38,9 @@ def youtube_data_api(request):
     if resolve(request.path).url_name == 'youtube_data_api':
         template_name = 'app/youtube/index.html'
         context['credentials'] = credentials
+        if request.method == 'POST':
+            del request.session['credentials']
+            return redirect('.')
     elif resolve(request.path).url_name == 'youtube_data_api_channels':
         channels = youtube.channels().list(mine=True, part='snippet').execute()
         template_name = 'app/youtube/channels.html'
@@ -119,14 +122,12 @@ def youtube_analytics_api(request):
 
     analytics = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate='2017-01-01',
-        endDate='2017-12-31',
+        startDate='2022-01-01',
+        endDate='2022-12-31',
         metrics='estimatedMinutesWatched,views,likes,subscribersGained',
         dimensions='day',
         sort='day'
     ).execute()
-
-    print(analytics)
 
     return render(request, template_name, {'analytics': analytics})
 
@@ -144,5 +145,9 @@ def youtube_data_api_oauth2_callback(request):
 
 
 def recommend_view(request):
-    links_csv = pd.read_csv('./MovieLens/ml-latest-small/links.csv')
+    links_csv = pd.read_csv('app/MovieLens/ml-latest-small/links.csv')
     return render(request, 'app/recommend/index.html', {'links_csv': links_csv})
+
+
+def openlayers_view(request):
+    return render(request, 'app/openlayers/index.html')

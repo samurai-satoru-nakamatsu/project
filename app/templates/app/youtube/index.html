@@ -17,5 +17,9 @@
     <li>quota_project_id: {{ credentials.quota_project_id }}</li>
     <li>expiry: {{ credentials.expiry }}</li>
     </ul>
+
+    <form method="post">{% csrf_token %}
+        <button class="btn btn-danger">削除</button>
+    </form>
 </div>
 {% endblock %}

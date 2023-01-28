@@ -6,6 +6,27 @@
 {% block content %}
 {{ block.super }}
 <div class="container mt-2">
+    <a href="https://developers.google.com/youtube/analytics/reference/reports/query#python" target="_blank" rel="noopener">
+        https://developers.google.com/youtube/analytics/reference/reports/query#python
+    </a>
+    <table class="table">
+        <thead>
+            <tr>
+                {% for header in analytics.columnHeaders %}
+                <th>{{ header.name }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in analytics.rows %}
+            <tr>
+                {% for item in row %}
+                <td>{{ item }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <pre>{{ analytics|pretty_json }}</pre>
 </div>
 {% endblock %}
