@@ -17,55 +17,63 @@
     <button id="zoom-in">Zoom in</button>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
 <script>
-  const style = {
-    'Point': new ol.style.Style({
-      image: new ol.style.Circle({
-        fill: new ol.style.Fill({
-          color: 'rgba(255,255,0,0.4)',
-        }),
-        radius: 5,
-        stroke: new ol.style.Stroke({
-          color: '#ff0',
-          width: 1,
-        }),
-      }),
-    }),
-    'LineString': new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: '#f00',
-        width: 3,
-      }),
-    }),
-    'MultiLineString': new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: '#0f0',
-        width: 3,
-      }),
-    }),
-  };
-  const vector = new ol.layer.Vector({
-    source: new ol.source.Vector({
-      url: '{% static "app/gpx/7607339372.gpx" %}',
-      format: new ol.format.GPX()
-    }),
-    style: function (feature) {
-      return style[feature.getGeometry().getType()];
-    },
+  const view = new ol.View({
+    center: [0, 0],
+    zoom: 2,
   });
 
   const map = new ol.Map({
-    target: 'map',
     layers: [
       new ol.layer.Tile({
         source: new ol.source.OSM()
       }),
-      vector
     ],
-    view: new ol.View({
-      center: ol.proj.fromLonLat([137.59, 36]),  //初期の中心位置 [経度, 緯度]
-      zoom: 6 //ズームレベル
+    target: 'map',
+    view: view,
+  });
+
+  const geolocation = new ol.Geolocation({
+    projection: view.getProjection(),
+    tracking: true,
+  });
+
+  const accuracyFeature = new ol.Feature();
+  geolocation.on('change:accuracyGeometry', function () {
+    accuracyFeature.setGeometry(geolocation.getAccuracyGeometry());
+  });
+
+  const positionFeature = new ol.Feature();
+  positionFeature.setStyle(
+    new ol.style.Style({
+      image: new ol.style.Circle({
+        radius: 6,
+        fill: new ol.style.Fill({
+          color: '#3399CC',
+        }),
+        stroke: new ol.style.Stroke({
+          color: '#fff',
+          width: 2,
+        }),
+      }),
     })
+  );
+
+  geolocation.once('change:position', function () {
+    const coordinates = geolocation.getPosition();
+    view.setCenter(coordinates);
+    view.setZoom(10);
+    positionFeature.setGeometry(coordinates ? new ol.geom.Point(coordinates) : null);
+  });
+
+  new ol.layer.Vector({
+    map: map,
+    source: new ol.source.Vector({
+      features: [accuracyFeature, positionFeature],
+    }),
   });
 
   document.getElementById('zoom-out').onclick = () => {

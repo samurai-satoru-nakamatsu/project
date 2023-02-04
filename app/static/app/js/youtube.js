@@ -15,9 +15,12 @@ keywords.addEventListener('keypress', (event) => {
         button.setAttribute('class', 'delete-keyword');
         // x アイコン
         button.innerHTML = '<i class="bi bi-x-circle"></i>';
-        // x ボタンを押されたら自害
+        // x ボタンを押されたら
         button.addEventListener('click', (event) => {
+            // 削除
             event.target.closest('button').parentElement.remove();
+            // フォーカス
+            keywords.focus();
         });
         div.appendChild(button);
 

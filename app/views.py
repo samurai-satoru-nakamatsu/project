@@ -151,3 +151,7 @@ def recommend_view(request):
 
 def openlayers_view(request):
     return render(request, 'app/openlayers/index.html')
+
+
+def leaflet_view(request):
+    return render(request, 'app/leaflet/index.html')
