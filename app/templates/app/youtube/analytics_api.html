@@ -6,10 +6,28 @@
 {% block content %}
 {{ block.super }}
 <div class="container mt-2">
-    <a href="https://developers.google.com/youtube/analytics/reference/reports/query#python" target="_blank" rel="noopener">
+    <div class="mt-3">
+    <a href="https://developers.google.com/youtube/analytics/reference/reports/query#python" target="_blank"
+        rel="noopener">
         https://developers.google.com/youtube/analytics/reference/reports/query#python
     </a>
-    <table class="table">
+    </div>
+    <div class="mt-3">
+        <form class="row gy-2 gx-3 align-items-center">
+            <div class="col-auto">
+                <label class="visually-hidden" for="id_start_date">Start</label>
+                <input type="date" class="form-control" id="id_start_date" name="start_date" value="2022-01-01">
+            </div>
+            <div class="col-auto">
+                <label class="visually-hidden" for="id_end_date">End</label>
+                <input type="date" class="form-control" id="id_end_date" name="end_date" value="2022-12-31">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+    <table class="table mt-3">
         <thead>
             <tr>
                 {% for header in analytics.columnHeaders %}

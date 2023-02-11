@@ -14,11 +14,24 @@
   <body>
   <nav class="navbar navbar-dark bg-dark sticky-top">
     <div class="navbar-nav d-flex flex-row">
-      <a class="nav-link mx-3" href="{% url 'videos' %}">Videos</a>
-      <a class="nav-link mx-3" href="{% url 'youtube_data_api' %}"><i class="bi bi-youtube"></i> YouTube Data API</a>
-      <a class="nav-link mx-3" href="{% url 'leaflet' %}">Leaflet</a>
-      <a class="nav-link mx-3" href="{% url 'openlayers' %}">OpenLayers</a>
-      <a class="nav-link mx-3" href="{% url 'recommend' %}">レコメンド</a>
+      <a class="nav-link mx-3" href="{% url 'videos' %}">
+        <i class="bi bi-camera-reels"></i> Videos
+      </a>
+      <a class="nav-link mx-3" href="{% url 'youtube_data_api' %}">
+        <i class="bi bi-youtube"></i> YouTube Data API
+      </a>
+      <a class="nav-link mx-3" href="{% url 'twitter' %}">
+        <i class="bi bi-twitter"></i> Twitter
+      </a>
+      <a class="nav-link mx-3" href="{% url 'leaflet' %}">
+        <i class="bi bi-map"></i> Leaflet
+      </a>
+      <a class="nav-link mx-3" href="{% url 'openlayers' %}">
+        <i class="bi bi-map"></i> OpenLayers
+      </a>
+      <a class="nav-link mx-3" href="{% url 'recommend' %}">
+        レコメンド
+      </a>
     </div>
     <div class="navbar-nav d-flex flex-row">
     </div>

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ block.super }}
+<div class="container">
+    <ul>
+        <li>
+            <a href="https://www.tweepy.org" target="_blank">https://www.tweepy.org</a>
+        </li>
+        <li>
+            <a href="https://twitter.com" target="_blank">https://twitter.com</a>
+        </li>
+    </ul>
+    <form method="post">{% csrf_token %}
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" name="tweet" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+{% endblock %}

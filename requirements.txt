@@ -9,3 +9,5 @@ whitenoise
 pandas
 numpy
 scikit-surprise
+tweepy
+matplotlib

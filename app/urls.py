@@ -2,7 +2,7 @@ from django.urls import path
 from django.views.generic import TemplateView
 from .views import (
     showvideo, youtube_data_api, youtube_data_api_auth, youtube_data_api_oauth2_callback,
-    youtube_analytics_api, recommend_view, openlayers_view, leaflet_view
+    youtube_analytics_api, recommend_view, openlayers_view, leaflet_view, twitter_view
 )
 
 urlpatterns = [
@@ -22,4 +22,5 @@ urlpatterns = [
     path('recommend/', recommend_view, name='recommend'),
     path('openlayers/', openlayers_view, name='openlayers'),
     path('leaflet/', leaflet_view, name='leaflet'),
+    path('twitter/', twitter_view, name='twitter'),
 ]

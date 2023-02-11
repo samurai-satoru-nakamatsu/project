@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import resolve
 import googleapiclient.discovery
 import pandas as pd
+import tweepy
 
 from app.youtube.auth import get_google_auth_url, get_google_auth_credentials, get_google_credentials, credentials_to_dict
 from app.youtube.upload_video import initialize_upload
@@ -120,10 +121,19 @@ def youtube_analytics_api(request):
     credentials = get_google_credentials(request.session.get('credentials'))
     youtube_analytics = googleapiclient.discovery.build(API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
+
+    start_date = '2022-01-01'
+    end_date = '2022-12-31'
+    if request.GET:
+        if request.GET.get('start_date'):
+            start_date = request.GET.get('start_date')
+        if request.GET.get('end_date'):
+            end_date = request.GET.get('end_date')
+
     analytics = youtube_analytics.reports().query(
         ids='channel==MINE',
-        startDate='2022-01-01',
-        endDate='2022-12-31',
+        startDate=start_date,
+        endDate=end_date,
         metrics='estimatedMinutesWatched,views,likes,subscribersGained',
         dimensions='day',
         sort='day'
@@ -155,3 +165,16 @@ def openlayers_view(request):
 
 def leaflet_view(request):
     return render(request, 'app/leaflet/index.html')
+
+
+def twitter_view(request):
+    if request.method == 'POST' and request.POST.get('tweet'):
+        consumer_key = 'r6j3Xyz90agVA4gLrqoJ6erqB'  # API Key
+        consumer_secret = 'kCwK8wKtXrQZyxCUs17B0j8WizLLoS0i8z2rK9Mmvxqo2e2jv0'  # API Key Secret
+        access_token = '1461296500366282756-SIxQmC3tg0qJBtIkJAlMuoTvcswnsB'
+        access_token_secret = '5lGzcDHl3mgWPe7dEHWofLzS5NaTunmQWZrzzmsuVa8oQ'
+        bearer_token ='AAAAAAAAAAAAAAAAAAAAAP5fWAEAAAAABC7EwjesfHpc3chubDcCcQ2n8dQ%3DdWfJT96Es2TNQ11ov7wiex43uBD41JNepdjqetQ4YTm9eOeYwS'
+        client = tweepy.Client(bearer_token=bearer_token, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret)
+        client.create_tweet(text=request.POST['tweet'])
+        return redirect('.')
+    return render(request, 'app/twitter/index.html')
