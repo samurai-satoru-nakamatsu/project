@@ -4,6 +4,11 @@ from django.urls import resolve
 import googleapiclient.discovery
 import pandas as pd
 import tweepy
+import pprint
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+import os
 
 from app.youtube.auth import get_google_auth_url, get_google_auth_credentials, get_google_credentials, credentials_to_dict
 from app.youtube.upload_video import initialize_upload
@@ -80,6 +85,7 @@ def youtube_data_api(request):
             search = youtube.search().list(part='snippet', forMine=True, type='video', maxResults=50).execute()
             cache.set('youtube_data_api_search', search)
         context['search'] = search
+        pprint.pprint(search)
     elif resolve(request.path).url_name == 'youtube_data_api_thumbnails':
         template_name = 'app/youtube/thumbnails.html'
 
@@ -169,12 +175,18 @@ def leaflet_view(request):
 
 def twitter_view(request):
     if request.method == 'POST' and request.POST.get('tweet'):
-        consumer_key = 'r6j3Xyz90agVA4gLrqoJ6erqB'  # API Key
-        consumer_secret = 'kCwK8wKtXrQZyxCUs17B0j8WizLLoS0i8z2rK9Mmvxqo2e2jv0'  # API Key Secret
-        access_token = '1461296500366282756-SIxQmC3tg0qJBtIkJAlMuoTvcswnsB'
-        access_token_secret = '5lGzcDHl3mgWPe7dEHWofLzS5NaTunmQWZrzzmsuVa8oQ'
-        bearer_token ='AAAAAAAAAAAAAAAAAAAAAP5fWAEAAAAABC7EwjesfHpc3chubDcCcQ2n8dQ%3DdWfJT96Es2TNQ11ov7wiex43uBD41JNepdjqetQ4YTm9eOeYwS'
-        client = tweepy.Client(bearer_token=bearer_token, consumer_key=consumer_key, consumer_secret=consumer_secret, access_token=access_token, access_token_secret=access_token_secret)
+        consumer_key = os.environ.get('TWITTER_CONSUMER_KEY')
+        consumer_secret = os.environ.get('TWITTER_CONSUMER_SECRET')
+        access_token = os.environ.get('TWITTER_ACCESS_TOKEN')
+        access_token_secret = os.environ.get('TWITTER_ACCESS_TOKEN_SECRET')
+        bearer_token =os.environ.get('TWITTER_BEARER_TOKEN')
+        client = tweepy.Client(
+            bearer_token=bearer_token,
+            consumer_key=consumer_key,
+            consumer_secret=consumer_secret,
+            access_token=access_token,
+            access_token_secret=access_token_secret
+        )
         client.create_tweet(text=request.POST['tweet'])
         return redirect('.')
     return render(request, 'app/twitter/index.html')
