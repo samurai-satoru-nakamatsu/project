@@ -5,15 +5,13 @@ import googleapiclient.discovery
 import pandas as pd
 import tweepy
 import pprint
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
 import os
 
 from app.youtube.auth import get_google_auth_url, get_google_auth_credentials, get_google_credentials, credentials_to_dict
 from app.youtube.upload_video import initialize_upload
 from .models import Video
 from .forms import VideoForm
+from .graph.graph import google_analytics_graph
 
 def showvideo(request):
     form= VideoForm(request.POST or None, request.FILES or None)
@@ -117,7 +115,6 @@ def youtube_data_api(request):
 
 
 def youtube_analytics_api(request):
-    template_name = 'app/youtube/analytics_api.html'
     if not request.session.get('credentials'):
         return redirect('youtube_data_api_auth')
 
@@ -145,7 +142,9 @@ def youtube_analytics_api(request):
         sort='day'
     ).execute()
 
-    return render(request, template_name, {'analytics': analytics})
+    graph = google_analytics_graph(analytics)
+
+    return render(request, 'app/youtube/analytics_api.html', {'analytics': analytics, 'graph': graph})
 
 def youtube_data_api_auth(request):
     google_auth_url, state = get_google_auth_url()
