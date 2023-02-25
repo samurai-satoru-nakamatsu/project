@@ -48,7 +48,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.js"
   charset="utf-8"></script>
 <script>
-  var map = L.map('map').setView([36, 137.59], 5);
+  var map = L.map('map').setView([34.78, 138], 12);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -59,13 +59,36 @@
     '{% static "app/geojson/東海旅客鉄道東海道線.geojson" %}',
     '{% static "app/geojson/東日本旅客鉄道東海道線.geojson" %}'
   ];
+  const myStyle = {
+    "color": "#ff7800",
+    "weight": 5,
+    "opacity": 0.65
+  };
+  const geojsonMarkerOptions = {
+    radius: 8,
+    fillColor: "#ff7800",
+    color: "#000",
+    weight: 1,
+    opacity: 1,
+    fillOpacity: 0.8
+  };
   urls.forEach((url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
         L.geoJson(data, {
+          style: myStyle,
+          pointToLayer: (feature, latlng) => {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+          },
           onEachFeature: (feature, layer) => {
-            layer.bindPopup(feature.properties.name);
+            layer.bindPopup(`
+            <div>
+              <p>${feature.properties.name}</p>
+              <button class="btn btn-primary">開始地点</button>
+              <button class="btn btn-warning">終了地点</button>
+            </div>
+            `);
           }
         }).addTo(map);
       });
