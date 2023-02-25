@@ -72,7 +72,8 @@ def initialize_upload(youtube, options):
       categoryId=options.category
     ),
     status=dict(
-      privacyStatus=options.privacyStatus
+      privacyStatus=options.privacyStatus,
+      selfDeclaredMadeForKids=options.madeForKids
     )
   )
 

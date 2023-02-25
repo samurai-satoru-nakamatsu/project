@@ -1,3 +1,4 @@
+from distutils.util import strtobool
 from django.core.cache import cache
 from django.shortcuts import render, redirect
 from django.urls import resolve
@@ -62,6 +63,7 @@ def youtube_data_api(request):
                 'description': request.POST.get('description'),
                 'category': request.POST.get('category'),
                 'privacyStatus': request.POST.get('privacyStatus'),
+                'madeForKids': strtobool(request.POST.get('madeForKids')),
                 'file': request.FILES.get('file').temporary_file_path()
             })
             initialize_upload(youtube, options)
@@ -78,12 +80,12 @@ def youtube_data_api(request):
         context['playlists'] = playlists
     elif resolve(request.path).url_name == 'youtube_data_api_search':
         template_name = 'app/youtube/search.html'
-        search = cache.get('youtube_data_api_search')
+        #search = cache.get('youtube_data_api_search')
+        search = False
         if not search:
-            search = youtube.search().list(part='snippet', forMine=True, type='video', maxResults=50).execute()
+            search = youtube.search().list(part='id,snippet', forMine=True, type='video', maxResults=50).execute()
             cache.set('youtube_data_api_search', search)
         context['search'] = search
-        pprint.pprint(search)
     elif resolve(request.path).url_name == 'youtube_data_api_thumbnails':
         template_name = 'app/youtube/thumbnails.html'
 
