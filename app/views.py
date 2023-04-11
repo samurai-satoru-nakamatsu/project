@@ -7,11 +7,14 @@ import pandas as pd
 import tweepy
 import pprint
 import os
+from formtools.wizard.views import SessionWizardView
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 
 from app.youtube.auth import get_google_auth_url, get_google_auth_credentials, get_google_credentials, credentials_to_dict
 from app.youtube.upload_video import initialize_upload
 from .models import Video
-from .forms import VideoForm
+from .forms import ContactForm1, ContactForm2, VideoForm
 from .graph.graph import google_analytics_graph
 
 def showvideo(request):
@@ -80,8 +83,7 @@ def youtube_data_api(request):
         context['playlists'] = playlists
     elif resolve(request.path).url_name == 'youtube_data_api_search':
         template_name = 'app/youtube/search.html'
-        #search = cache.get('youtube_data_api_search')
-        search = False
+        search = cache.get('youtube_data_api_search')
         if not search:
             search = youtube.search().list(part='id,snippet', forMine=True, type='video', maxResults=50).execute()
             cache.set('youtube_data_api_search', search)
@@ -191,3 +193,28 @@ def twitter_view(request):
         client.create_tweet(text=request.POST['tweet'])
         return redirect('.')
     return render(request, 'app/twitter/index.html')
+
+
+class WizardView(SessionWizardView):
+    form_list = [('step1', ContactForm1), ('step2', ContactForm2)]
+    template_name = 'app/wizard/wizard_form.html'
+    file_storage = FileSystemStorage(location=os.path.join(settings.MEDIA_ROOT, 'wizard'))
+
+    def done(self, form_list, **kwargs):
+        form_data = [form.cleaned_data for form in form_list]
+        print(form_data)
+        return redirect('wizard_done')
+    
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form, **kwargs)
+        form_step1_files = self.storage.get_step_files('step1')
+        context['step1_file'] = form_step1_files['step1-file'] if form_step1_files else None
+        return context
+    
+    def get_form_kwargs(self, step=None):
+        kwargs = super().get_form_kwargs(step)
+        if step == 'step2':
+            form_step1_files = self.storage.get_step_files('step1')
+            kwargs['step1_file'] = form_step1_files['step1-file'] if form_step1_files else None
+        return kwargs
+

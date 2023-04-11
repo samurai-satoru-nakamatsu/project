@@ -4,18 +4,45 @@
 <div class="container">
     <h1>Video Uploader</h1>
     <form enctype="multipart/form-data" method="POST" action="">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Upload"/>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Upload" />
     </form>
 
-    <br><br>
+    <hr>
+    <div class="mb-3">
+        <textarea id="textarea" class="form-control"></textarea>
+    </div>
     {% for video in videos %}
-    <video width='400' controls>
-    <source src='{{ MEDIA_URL }}{{ video.videofile }}' type='video/mp4'>
-    Your browser does not support the video tag.
-    </video>
-    <br><br>
+    <div class="d-flex justify-content-start">
+        <div class="mx-3">
+            <video class="video" width='400' controls>
+                <source src='{{ MEDIA_URL }}{{ video.videofile }}' type='video/mp4'>
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <div>
+            <p>currentTime: <span class="currentTime"></span></p>
+            <p>time: <span class="time"></span><button>capter</button></p>
+        </div>
+    </div>
     {% endfor %}
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    const textarea = document.getElementById('textarea');
+    const videoElements = document.getElementsByClassName('video');
+    Array.from(videoElements).forEach(element => {
+        element.addEventListener('timeupdate', (event) => {
+            const currentTime = element.parentElement.parentElement.querySelector('.currentTime');
+            currentTime.textContent = event.target.currentTime;
+            const date = new Date(null);
+            date.setSeconds(event.target.currentTime);
+            const time = element.parentElement.parentElement.querySelector('.time');
+            time.textContent = date.toISOString().slice(11, 19);
+        });
+    });
+</script>
 {% endblock %}

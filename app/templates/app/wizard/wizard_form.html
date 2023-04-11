@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}
+<table>
+{{ wizard.management_form }}
+{{ wizard.form }}
+{% if step1_file %}
+<tr>
+    <th></th>
+    <td><img src="/media/wizard/{{ step1_file }}"></td>
+</tr>
+{% endif %}
+</table>
+{% if wizard.steps.prev %}
+<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">first step</button>
+<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">prev step</button>
+{% endif %}
+<input type="submit" value="submit"/>
+</form>
+</div>
+{% endblock %}

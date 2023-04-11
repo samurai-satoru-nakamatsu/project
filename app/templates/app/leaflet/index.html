@@ -59,7 +59,7 @@
     '{% static "app/geojson/東海旅客鉄道東海道線.geojson" %}',
     '{% static "app/geojson/東日本旅客鉄道東海道線.geojson" %}'
   ];
-  const myStyle = {
+  const lineStyle = {
     "color": "#ff7800",
     "weight": 5,
     "opacity": 0.65
@@ -72,12 +72,14 @@
     opacity: 1,
     fillOpacity: 0.8
   };
+  let startCoordinates;
   urls.forEach((url) => {
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         L.geoJson(data, {
-          style: myStyle,
+          style: lineStyle,
           pointToLayer: (feature, latlng) => {
             return L.circleMarker(latlng, geojsonMarkerOptions);
           },
@@ -85,13 +87,41 @@
             layer.bindPopup(`
             <div>
               <p>${feature.properties.name}</p>
-              <button class="btn btn-primary">開始地点</button>
-              <button class="btn btn-warning">終了地点</button>
+              <button class="btn btn-primary" onclick="setStartPoint([${feature.geometry.coordinates}]);">開始地点</button>
+              <button class="btn btn-warning" onclick="setEndPoint([${feature.geometry.coordinates}]);">終了地点</button>
             </div>
             `);
           }
         }).addTo(map);
       });
   });
+  function setStartPoint(coordinates) {
+    startCoordinates = coordinates;
+    console.log('set start:', coordinates);
+  }
+  function setEndPoint(coordinates) {
+    const lineStyle = {
+      "color": "#000000",
+      "weight": 5,
+      "opacity": 0.65
+    };
+    var myLines = {
+      "type": "FeatureCollection",
+      "features": [
+        {
+          "type": "Feature",
+          "properties": {
+            "popupContent": "<p>テスト</p>"
+          },
+          "geometry": {
+            "type": "LineString",
+            "coordinates": [startCoordinates, coordinates]
+          }
+        }
+      ]
+    };
+    console.log('myLines: ', myLines)
+    L.geoJSON(myLines, { style: lineStyle }).addTo(map);
+  }
 </script>
 {% endblock %}
